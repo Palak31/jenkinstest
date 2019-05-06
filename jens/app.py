@@ -5,7 +5,7 @@ app = Chalice(app_name='jens')
 
 @app.route('/')
 def index():
-    return {'hello': 'world...123 after github configuration polling interval 1'}
+    return {'hello': 'world...123 after github configuration polling interval 1 retry 2'}
 
 
 # The view function above will return {"hello": "world"}
