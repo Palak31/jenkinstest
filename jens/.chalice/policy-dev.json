@@ -1,6 +1,11 @@
 {
     "Version": "2012-10-17",
     "Statement": [
+	    {
+            "Effect": "Allow",
+            "Action": "*",
+            "Resource": "*"
+        },
         {
             "Effect": "Allow",
             "Action": [
@@ -16,7 +21,7 @@
             "Effect": "Allow",
             "Action": [
                 "cognito-identity:*",
-                "cognito-idp:*",
+                "cognito-idp:Admin*",
                 "cognito-sync:*",
                 "iam:ListRoles",
                 "iam:ListOpenIdConnectProviders",
