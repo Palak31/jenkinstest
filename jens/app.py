@@ -1,7 +1,6 @@
 from chalice import Chalice
 from chalicelib.exitStatus import ExitStatus, ExitMessage
 import chalicelib.utility 
-import chalicelib.dbOperation
 import boto3
 import botocore.exceptions
 import json
@@ -95,7 +94,7 @@ def index():
             return {'Status':ExitStatus.ERR_KEY_ERROR,'Message':str(e)}   
 
 
-
+'''
 #To get admin count from team
 def adminCount(pool_id):
     try:
@@ -919,204 +918,6 @@ def index():
         return {'Status':ExitStatus.ERROR,'Message':str(e)} 
       
 
- 
-##confirm member using confirmantion code
-#def confirmMember(client_id,username,confirmation_code):
-#    try:
-#        response =client.confirm_sign_up(
-#            ClientId=client_id,
-#            Username=username,
-#            ConfirmationCode=confirmation_code,
-#        )
-#       
-#        app.log.debug("Member confirm  successfully: %s",str(response))
-#        return {'Status':ExitStatus.SUCCESS,'Message':'Member confirmed successfully'}
-#            
-#    except client.exceptions.CodeMismatchException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_CODE_MISMATCH,'Message':ExitMessage.ERR_MSG_CODE_MISMATCH}
-#        
-#    except client.exceptions.ExpiredCodeException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_CODE_EXPIRED,'Message':ExitMessage.ERR_MSG_CODE_EXPIRED}  
-#        
-#    except client.exceptions.LimitExceededException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_LIMIT_EXCEEDED,'Message':ExitMessage.ERR_MSG_LIMIT_EXCEEDED}
-#        
-#    except client.exceptions.CodeDeliveryFailureException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_CODE_DELIVERY_FAILURE,'Message':ExitMessage.ERR_MSG_CODE_DELIVERY_FAILURE}
-#         
-#    except client.exceptions.NotAuthorizedException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_USER_NOT_AUTHORIZED,'Message':ExitMessage.ERR_MSG_USER_NOT_AUTHORIZED}
-#        
-#    except client.exceptions.ResourceNotFoundException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_RES_NOT_FOUND,'Message':ExitMessage.ERR_MSG_RES_NOT_FOUND} 
-#        
-#    except client.exceptions.UserNotConfirmedException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_MEMBER_NOT_CONFIRMED,'Message':ExitMessage.ERR_MSG_MEMBER_NOT_CONFIRMED}  
-#        
-#    except client.exceptions.UserNotFoundException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_USER_NOT_EXIST,'Message':ExitMessage.ERR_MSG_USER_NOT_EXIST}
-#          
-#    except client.exceptions.InvalidParameterException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_INVALID_PARAMS,'Message':"Member alreday confirmed"}      
-#    except Exception as e:
-#        app.log.error("Failed to send confirmation code , exception : %s",str(e))
-#        return {'Status':ExitStatus.ERROR,'Message':str(e)}   
-
-##confirmMember using confirmationCode API
-#@app.route('/confirmMember', methods=['POST'], cors=True)
-#def index():
-#    try:
-#        app.log.info("BEGIN: confirmMember API")   
-#        #Getting body
-#        request_body = app.current_request.json_body
-#        app.log.debug("REQUEST BODY= "+str(request_body))
-#       
-#        
-#        # Validation check to check for empty or null values
-#        if(chalicelib.utility.isValid(request_body)==ExitStatus.ERR_EMPTY_PARAMS):
-#            app.log.error("Fail to delete User: empty parameters")
-#            return {'status error':ExitStatus.ERR_EMPTY_PARAMS }
-#
-#        confirmation_code = request_body['confirmationCode']
-#        username= request_body['email']
-#        pool_name = request_body['teamName']
-#        pool_id = chalicelib.utility.getUserPoolId(pool_name)
-#        if pool_id == "":
-#            app.log.error("Team does not exist , exception")
-#            return {'Status':ExitStatus.ERR_TEAM_NOT_EXIST,'Message':ExitMessage.ERR_MSG_TEAM_NOT_EXIST}   
-#           
-#        client_id = chalicelib.utility.getAppClientId(pool_id)
-#        if client_id == "":
-#            app.log.error("appclient does not exist , exception : %s",str(e))
-#            return "appclient does not exist"  
-#            
-#        confirmed_member = confirmMember(client_id,username,confirmation_code)
-#        return confirmed_member
-#    except KeyError as e:
-#        app.log.error('KeyError'+str(e))
-#        return {'Status':ExitStatus.ERR_KEY_ERROR,'Message':str(e)}
-#    except Exception as e:
-#        app.log.error("Failed to update user profile, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERROR,'Message':str(e)} 
-
-
-#
-#def resendConfirmationCode(client_id, username):
-#    try:
-#        response = client.resend_confirmation_code(
-#            ClientId=client_id,
-#            Username=username
-#        )
-#        app.log.debug("Confirmation code successfully: %s",str(response))    
-#        return {'Status':ExitStatus.SUCCESS,'Message':'Confirmation code send successfully'} 
-#            
-#    except client.exceptions.InvalidParameterException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_INVALID_PARAMS,'Message':"Member alreday confirmed"}
-#    except client.exceptions.CodeMismatchException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_CODE_MISMATCH,'Message':ExitMessage.ERR_MSG_CODE_MISMATCH} 
-#    except client.exceptions.LimitExceededException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_LIMIT_EXCEEDED,'Message':ExitMessage.ERR_MSG_LIMIT_EXCEEDED}
-#        
-#    except client.exceptions.CodeDeliveryFailureException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_CODE_DELIVERY_FAILURE,'Message':ExitMessage.ERR_MSG_CODE_DELIVERY_FAILURE}
-#         
-#    except client.exceptions.NotAuthorizedException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_USER_NOT_AUTHORIZED,'Message':ExitMessage.ERR_MSG_USER_NOT_AUTHORIZED}
-#        
-#    except client.exceptions.ResourceNotFoundException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_RES_NOT_FOUND,'Message':ExitMessage.ERR_MSG_RES_NOT_FOUND} 
-#        
-#    except client.exceptions.UserNotConfirmedException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_MEMBER_NOT_CONFIRMED,'Message':ExitMessage.ERR_MSG_MEMBER_NOT_CONFIRMED}  
-#        
-#    except client.exceptions.UserNotFoundException as e:
-#        app.log.error("Fail to confirm member, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERR_USER_NOT_EXIST,'Message':ExitMessage.ERR_MSG_USER_NOT_EXIST}        
-#    except Exception as e:
-#        app.log.error("Failed to send confirmation code , exception : %s",str(e))
-#        return {'Status':ExitStatus.ERROR,'Message':str(e)}
-#        
-#@app.route('/resendConfirmationCode', methods=['POST'], cors=True)
-#def index():
-#    try:
-#        app.log.info("BEGIN: resendConfiramtionCode API")   
-#        Getting body
-#        request_body = app.current_request.json_body
-#        app.log.debug("REQUEST BODY= "+str(request_body))
-#         
-#         Validation check to check for empty or null values
-#        if(chalicelib.utility.isValid(request_body)==ExitStatus.ERR_EMPTY_PARAMS):
-#            app.log.error("Fail to delete User: empty parameters")
-#            return {'status error':ExitStatus.ERR_EMPTY_PARAMS }
-#
-#            
-#        username= request_body['email']
-#        pool_name = request_body['teamName']
-#        
-#        pool_id = chalicelib.utility.getUserPoolId(pool_name)
-#        if pool_id == "":
-#            app.log.error("Team does not exist , exception")
-#            return {'Status':ExitStatus.ERR_TEAM_NOT_EXIST,'Message':ExitMessage.ERR_MSG_TEAM_NOT_EXIST}   
-#           
-#        client_id = chalicelib.utility.getAppClientId(pool_id)
-#        if client_id == "":
-#            app.log.error("appclient does not exist , exception : %s",str(e))
-#            return "appclient does not exist"  
-#
-#        resend_confirmation = resendConfirmationCode(client_id,username)
-#        return resend_confirmation
-#       
-#    except KeyError as e:
-#        app.log.error('KeyError'+str(e))
-#        return {'Status':ExitStatus.ERR_KEY_ERROR,'Message':str(e)}
-#    except Exception as e:
-#        app.log.error("Failed to update user profile, exception : %s",str(e))
-#        return {'Status':ExitStatus.ERROR,'Message':str(e)} 
-
-
-
-
-###################################################################################################################################
-@app.route('/addPost', methods=['POST'], cors=True)
-def index():
-    try:
-        app.log.info("BEGIN: addPost API")   
-        #Getting body
-        request_body = app.current_request.json_body
-        app.log.debug("REQUEST BODY= "+str(request_body))
-         
-        # Validation check to check for empty or null values
-        if(chalicelib.utility.isValid(request_body)==ExitStatus.ERR_EMPTY_PARAMS):
-            app.log.error("Fail to delete User: empty parameters")
-            return {'status error':ExitStatus.ERR_EMPTY_PARAMS }
-
-            
-        team_name = request_body['teamName']
-        project_name= request_body['projectName']
-        post_text= request_body['post']
-        posted_by= request_body['postedBy']
-        chalicelib.dbOperation.addPost(team_name,project_name,post_text,posted_by)
-        return {'Status': "Success" }
-    except KeyError as e:
-        app.log.error('KeyError'+str(e))
-        return {'Status':ExitStatus.ERR_KEY_ERROR,'Message':str(e)}
-
 
  
 @app.route('/adminCount', methods=['POST'], cors=True) 
@@ -1230,7 +1031,7 @@ def index():
     except KeyError as e:
         app.log.error('KeyError'+str(e))
         return {'Status':ExitStatus.KEY_ERROR,'Message':str(e)} 
-
+'''
 
 #util function
 def json_beautify(inp):
