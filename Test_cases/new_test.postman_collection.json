@@ -18,7 +18,7 @@
 							"tests[\"Response time is less than 200ms\"] = responseTime < 10000;",
 							"",
 							"",
-							"tests[\"Executed\"] = responseBody === \"Team not exist.\";"
+							"tests[\"Executed\"] = responseBody === '{\"Status\":1001,\"Message\":\"Team not exist.\"}';"
 						]
 					}
 				}
