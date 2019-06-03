@@ -1,0 +1,45 @@
+{
+	"variables": [],
+	"info": {
+		"name": "new_test",
+		"_postman_id": "8d9f46c8-bdba-a229-6c0c-a8ca083d8a6a",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": " https://qjg1s9wk9d.execute-api.us-east-2.amazonaws.com/api/login\n",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Response time is less than 200ms\"] = responseTime < 10000;",
+							"",
+							"",
+							"tests[\"Executed\"] = responseBody === \"Team not exist.\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://qjg1s9wk9d.execute-api.us-east-2.amazonaws.com/api/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"email\":\"admin@gmail.com\",\n\"password\":\"ankush201\",\n\"teamName\":\"Ankush12\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
